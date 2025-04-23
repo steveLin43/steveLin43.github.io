@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh_TW">
+
+<head>
+    <title>朱嘎嘎的嘎嘎</title>
+    <meta property="og:site_name" content="朱嘎嘎的嘎嘎">
+    <meta property="og:title" content="朱嘎嘎的嘎嘎">
+    <meta property="og:description" content="朱嘎嘎的嘎嘎_分享簡介">
+    <meta property="og:image" content="//img/share_pic.jpg">
+    <meta property="og:url" content="朱嘎嘎的嘎嘎_網址">
+
+    <meta name="description" content="朱嘎嘎的嘎嘎_給關鍵字搜尋">
+    <meta name="keywords" content="朱嘎嘎的嘎嘎_關鍵字">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="common/common.css">
+    <!-- Social Medias -->
+    <link rel="stylesheet" type="text/css" href="https://cdn2.editmysite.com/css/social-icons.css?buildtime=1742420046"
+        media="screen,projection">
+</head>
+
+<style>
+    .container {
+        padding-top: 30px;
+    }
+
+    .paragraph {
+        text-align: left;
+        padding-left: 20px;
+        font-family: "PMingLiU", "標楷體", sans-serif;
+    }
+</style>
+
+<script type="text/javascript" src="common/common.js"></script>
+
+<body class="main">
+    <div class="header" style="background-image: url(&quot;./img/bar.jpg&quot;)">
+        <div class="title">
+            <a href="./index.html">朱嘎嘎的嘎嘎</a>
+        </div>
+        <div class="bar">
+            <a href="./gallery.html" class="bar-item" style="position: relative;">
+                作品集
+            </a>
+        </div>
+    </div>
+
+    <div class="content" style="height: 700px;vertical-align: top;
+        background-image: url(&quot;./img/background.jpg&quot;) ;background-position: 50.00% 24.52% ;background-size: cover ;
+        background-attachment: fixed;">
+        <div class="container">
+            <div id="box">
+                <img src="img/cycle_1.jpg" id="cycle" style="width: 600px;height: 300px;" />
+                <p id="pageView">
+                    <i class="active"></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </p>
+            </div>
+            <div class="section-content">
+                <div class="paragraph" style="text-align:left;color:rgb(255, 255, 255)">
+                    <span size="3">朱嘎嘎的自我介紹紹紹紹紹紹紹紹</span>
+                </div>
+                <!-- Social Medias -->
+                <div style="text-align:right; padding-right: 20px;">
+                    <a class="wsite-social-item wsite-social-facebook" href="https://www.facebook.com/ayechenboss/"
+                        target="_blank" alt="Facebook" aria-label="Facebook"></a>
+                    <a class="wsite-social-item wsite-social-instagram" href="https://www.instagram.com/bossennoir/"
+                        target="_blank" alt="Instagram" aria-label="Instagram"></a>
+                    <a class="wsite-social-item wsite-social-mail" href="mailto:bossinblack@gmail.com" target="_blank"
+                        alt="Mail" aria-label="Mail"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer" style="text-align:center;">Copyright © 2025 朱珈儀 All Rights Reserved.&nbsp;</div>
+</body>
+
+<script type="text/javascript">
+    // 輪播圖
+    $(function () {
+        var oImg = $('cycle');
+        var aPage = document.getElementsByTagName('i');
+        var timer = null;
+        var index = 0;
+        var currentPage = 0;
+        var cycleTime = 3;
+
+        startTimer();
+
+        for (var i = 0; i < aPage.length; i++) {
+            aPage[i].index = i;
+            aPage[i].onclick = function () {
+                stopTimer();
+
+                index = this.index;
+                changeView();
+
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            if (timer == null) {
+                timer = setInterval(changeTag, cycleTime * 1000);
+            }
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+            timer = null;
+        }
+
+        function changeTag() {
+            index++;
+            changeView();
+        }
+
+        function changeView() {
+            if (index > aPage.length - 1) {
+                index = 0;
+            }
+
+            oImg.src = 'img/cycle_' + (index + 1) + '.jpg';
+
+            aPage[currentPage].className = '';
+            currentPage = index;
+            aPage[currentPage].className = 'active';
+        }
+    });
+</script>
+
+</html>
