@@ -9,14 +9,16 @@
 </head>
 
 <body class="main">
-    <div id="header-bar"></div>
-    <script>
-        fetch('./common/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-bar').innerHTML = html;
-            });
-    </script>
+    <div class="header" style="background-image: url(&quot;./img/bar.jpg&quot;)">
+        <div id="header-bar"></div>
+        <script>
+            fetch('./common/header.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('header-bar').innerHTML = html;
+                });
+        </script>
+    </div>
 
     <div class="content" style="height: 700px;vertical-align: top;
         background-image: url(&quot;./img/background.jpg&quot;) ;background-position: 50.00% 24.52% ;background-size: cover ;
