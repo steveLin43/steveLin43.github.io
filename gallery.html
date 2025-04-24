@@ -4,65 +4,9 @@
 <head>
     <title>朱嘎嘎的嘎嘎</title>
 
-    <link rel="stylesheet" href="common/common.css">
+    <link rel="stylesheet" href="./common/common.css">
+    <link rel="stylesheet" href="./common/card.css">
 </head>
-
-<style>
-    .card-list {
-        display: flex;
-        justify-content: space-between; /* 讓單字間隔平均 */
-        align-items: center;
-        gap: 5px; /* 水平圖片之間的間距 */
-        width: 100%;            /* 容器寬度設為 100% */
-        max-width: 1200px; /* 可以設定容器的最大寬度 */
-        margin: 0 auto; /* 讓容器居中 */
-        box-sizing: border-box; /* 讓所有的 padding 和 border 包括在寬度計算內 */
-    }
-
-    .card-list .card {
-        flex-grow: 1;           /* 讓每個單字元素根據空間進行擴展 */
-        position: relative;
-        display: inline-block;
-        width: 30%; /* 每張圖片佔父容器的 30% */
-        max-width: 300px; /* 設定圖片最大寬度 */
-        height: 200px; /* 設定圖片的高度 */
-        text-align: center;
-        box-sizing: border-box; /* 讓 padding 和 border 不影響寬度 */
-        overflow: hidden; /* 確保圖片不會超出容器 */
-        margin-top: 20px; /* 增加圖片之間的垂直間距 */
-        margin-bottom: 20px; /* 增加圖片之間的垂直間距 */
-    }
-
-    /* 預設圖片樣式 */
-    .image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* 保持圖片比例且填充容器 */
-        transition: opacity 0.3s ease;
-    }
-
-    /* 預設文字隱藏 */
-    .text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: 20px;
-        font-weight: bold;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    /* 當滑鼠懸停在圖片上時 */
-    .card:hover .image {
-        opacity: 0.5;
-    }
-
-    .card:hover .text {
-        opacity: 1;
-    }
-</style>
 
 <body class="main">
     <div id="header-bar"></div>
