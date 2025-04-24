@@ -12,3 +12,31 @@ img {display:block; border:0; }
 .header {display:flex; justify-content:space-between; width:100%; font-family:"PMingLiU", "標楷體", sans-serif;}
 .header .bar {flex-grow:1; text-align:center; font-size:20px; margin:0 10px;}
 .header a {color:#ff5733; text-decoration:none;}
+
+/* header bar dropdown*/
+.dropdown-content {
+    max-height: 0;
+    overflow: hidden;
+    position: absolute;
+    left: 50%; /* 水平位置設在中間 */
+    transform: translateX(-50%); /* 將它往左移一半寬度以置中 */
+    background-color: white;
+    min-width: 120px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
+    z-index: 99; /* 顯示層級 */
+    transition: max-height 0.3s ease; /* 動畫滑動效果 */
+    text-align: center;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none; /* 去除預設的超連結底線 */
+    opacity: 0;
+    transition: opacity 1s ease;
+    background: linear-gradient(to bottom, #fff, blue);
+}
+
+.dropdown:hover .dropdown-content {max-height: 300px; /* 足夠容納全部項目即可 */}
+.dropdown:hover .dropdown-content a {opacity: 1;}

@@ -14,7 +14,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="common/common.css">
+    <link rel="stylesheet" href="./common/common.css">
     <!-- Social Medias -->
     <link rel="stylesheet" type="text/css" href="https://cdn2.editmysite.com/css/social-icons.css?buildtime=1742420046"
         media="screen,projection">
@@ -32,20 +32,21 @@
     }
 </style>
 
-<script type="text/javascript" src="common/common.js"></script>
+<script type="text/javascript" src="./common/common.js"></script>
 
 <body class="main">
-    <div id="header-bar"></div>
+    <div class="header" id="header" style="background-image: url('./img/bar.jpg')"></div>
     <script>
         fetch('./common/header.html')
             .then(response => response.text())
             .then(html => {
-                document.getElementById('header-bar').innerHTML = html;
+                document.getElementById('header').innerHTML = html;
             });
     </script>
+    
 
     <div class="content" style="height: 700px;vertical-align: top;
-        background-image: url(&quot;./img/background.jpg&quot;) ;background-position: 50.00% 24.52% ;background-size: cover ;
+        background-image: url('./img/background.jpg') ;background-position: 50.00% 24.52% ;background-size: cover ;
         background-attachment: fixed;">
         <div class="container">
             <div id="box">
