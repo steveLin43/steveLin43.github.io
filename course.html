@@ -20,7 +20,7 @@
 
 <script type="text/javascript" src="./common/common.js"></script>
 
-<body class="main">
+<body class="main" oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
     <div class="header" id="header" style="background-image: url('./img/bar.jpg')"></div>
     <script>
         fetch('./common/header.html')
@@ -35,9 +35,10 @@
         background-image: url('./img/background.jpg') ;background-position: 50.00% 24.52% ;background-size: cover ;
         background-attachment: fixed;">
         <div class="container">
-            <div id="box">
-                <img src="img/cycle_1.jpg" id="cycle" style="width: 600px;height: 300px;" />
-                <p id="pageView">
+            <div id="box" style="position: relative; width: 600px; height: 300px;">
+                <canvas id="canvas1" width="600" height="300" style="position:absolute; top:0; left:0; z-index:1;"></canvas>
+                <canvas id="canvas2" width="600" height="300" style="position:absolute; top:0; left:0; z-index:2; opacity: 0; transition: opacity 1s;"></canvas>
+                <p id="pageView" style="position:absolute; bottom:10px; left:50%; transform:translateX(-50%); z-index:3;">
                     <i class="active"></i>
                     <i></i>
                     <i></i>
@@ -66,30 +67,79 @@
 
 <script type="text/javascript">
     // 輪播圖
-    $(function () {
-        var oImg = $('cycle');
-        var aPage = document.getElementsByTagName('i');
-        var timer = null;
-        var index = 0;
-        var currentPage = 0;
-        var cycleTime = 3;
+    document.addEventListener('DOMContentLoaded', function () {
+        const canvasA = document.getElementById('canvas1');
+        const ctxA = canvasA.getContext('2d');
+        const canvasB = document.getElementById('canvas2');
+        const ctxB = canvasB.getContext('2d');
 
-        startTimer();
+        const aPage = document.getElementsByTagName('i');
 
-        for (var i = 0; i < aPage.length; i++) {
-            aPage[i].index = i;
-            aPage[i].onclick = function () {
-                stopTimer();
+        const imagePaths = [
+            'img/cycle_1.jpg',
+            'img/cycle_2.jpg',
+            'img/cycle_3.jpg',
+            'img/cycle_4.jpg',
+            'img/cycle_5.jpg'
+        ];
 
-                index = this.index;
-                changeView();
+        let index = 0;
+        let currentPage = 0;
+        let timer = null;
+        const cycleTime = 3;
+        let showingA = true;
 
-                startTimer();
-            }
+        function drawImageWithWatermark(ctx, img, canvas) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            ctx.font = '18px Arial';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.textAlign = 'right';
+            ctx.fillText('© 朱嘎嘎', canvas.width - 10, canvas.height - 10);
+        }
+
+        function transitionTo(index) {
+            const img = new Image();
+            img.src = imagePaths[index];
+            img.onload = () => {
+                const fadeInCanvas = showingA ? canvasB : canvasA;
+                const fadeInCtx = showingA ? ctxB : ctxA;
+                const fadeOutCanvas = showingA ? canvasA : canvasB;
+
+                // 畫新圖
+                drawImageWithWatermark(fadeInCtx, img, fadeInCanvas);
+
+                // 確保透明度初始值正確
+                fadeInCanvas.style.opacity = 0;
+                fadeOutCanvas.style.opacity = 1;
+
+                // 觸發動畫（稍微延遲一下，確保 opacity 0 → 1 有時間差）
+                requestAnimationFrame(() => {
+                    fadeInCanvas.style.opacity = 1;
+                    fadeOutCanvas.style.opacity = 0;
+                });
+
+                showingA = !showingA; // 下一次換 canvas
+            };
+        }
+
+        function changeView() {
+            if (index >= imagePaths.length) index = 0;
+            transitionTo(index);
+
+            aPage[currentPage].className = '';
+            currentPage = index;
+            aPage[currentPage].className = 'active';
+        }
+
+        function changeTag() {
+            index++;
+            changeView();
         }
 
         function startTimer() {
-            if (timer == null) {
+            if (timer === null) {
                 timer = setInterval(changeTag, cycleTime * 1000);
             }
         }
@@ -99,23 +149,19 @@
             timer = null;
         }
 
-        function changeTag() {
-            index++;
-            changeView();
+        // 點選下方圓點
+        for (let i = 0; i < aPage.length; i++) {
+            aPage[i].index = i;
+            aPage[i].onclick = function () {
+                stopTimer();
+                index = this.index;
+                changeView();
+                startTimer();
+            };
         }
 
-        function changeView() {
-            if (index > aPage.length - 1) {
-                index = 0;
-            }
-
-            oImg.src = 'img/cycle_' + (index + 1) + '.jpg';
-
-            aPage[currentPage].className = '';
-            currentPage = index;
-            aPage[currentPage].className = 'active';
-        }
+        // 初始化
+        transitionTo(index);
+        startTimer();
     });
 </script>
-
-</html>
