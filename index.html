@@ -81,9 +81,7 @@
     // 輪播圖
     document.addEventListener('DOMContentLoaded', function () {
         const canvasA = document.getElementById('canvas1');
-        const ctxA = canvasA.getContext('2d');
         const canvasB = document.getElementById('canvas2');
-        const ctxB = canvasB.getContext('2d');
         const aPage = document.querySelectorAll('#pageView i');
 
         const imagePaths = [
@@ -106,11 +104,12 @@
             img.src = imagePaths[index];
             img.onload = () => {
                 const fadeInCanvas = showingA ? canvasB : canvasA;
-                const fadeInCtx = showingA ? ctxB : ctxA;
                 const fadeOutCanvas = showingA ? canvasA : canvasB;
 
+                resizeCanvas(fadeInCanvas);
+                const ctx = fadeInCanvas.getContext('2d');
                 // 畫新圖
-                drawImageWithWatermark(fadeInCtx, img, fadeInCanvas);
+                drawImageWithWatermark(ctx, img, fadeInCanvas);
 
                 // 確保透明度初始值正確
                 fadeInCanvas.style.opacity = 0;

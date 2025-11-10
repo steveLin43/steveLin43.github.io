@@ -21,25 +21,9 @@ function resizeCanvas(canvas) {
 
 // 繪製圖片與浮水印
 function drawImageWithWatermark(ctx, img, canvas) {
-    const rect = canvas.getBoundingClientRect();
-
-    // 清除畫布（使用 CSS 尺寸即可，因為 ctx 已經 scale 過了）
-    ctx.clearRect(0, 0, rect.width, rect.height);
-
-    // 繪製圖片
-    ctx.drawImage(img, 0, 0, rect.width, rect.height);
-
-    // 繪製浮水印（字體大小用 CSS 單位）
-    ctx.font = '18px Arial';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-    ctx.textAlign = 'right';
-    ctx.fillText('© 朱嘎嘎', rect.width - 10, rect.height - 10);
-}
-
-function drawImageWithWatermark(ctx, img, canvas) {
     const dpr = window.devicePixelRatio || 1;
-    const w = canvas.width;
-    const h = canvas.height;
+    const w = canvas.width / dpr; // 從物理像素轉為CSS像素
+    const h = canvas.height / dpr;
 
     // 清空畫布
     ctx.clearRect(0, 0, w, h);
@@ -67,7 +51,7 @@ function drawImageWithWatermark(ctx, img, canvas) {
     ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
 
     // ------- 浮水印樣式 -------
-    const fontSize = 18 * dpr;
+    const fontSize = 18;
     ctx.font = `${fontSize}px Arial`;
     ctx.textAlign = 'right';
     ctx.textBaseline = 'bottom';
@@ -80,7 +64,7 @@ function drawImageWithWatermark(ctx, img, canvas) {
     ctx.shadowOffsetY = 2 * dpr;
 
     const text = '© 朱嘎嘎';
-    const pad = 12 * dpr;
+    const pad = 12;
 
     ctx.fillText(text, w - pad, h - pad);
 
@@ -88,22 +72,39 @@ function drawImageWithWatermark(ctx, img, canvas) {
     ctx.shadowBlur = 0;
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
-
     const patternCanvas = document.createElement('canvas');
-    const pw = 120 * dpr;
-    const ph = 120 * dpr;
-    patternCanvas.width = pw;
-    patternCanvas.height = ph;
+
+    let basePatternSize;
+    const screenW = window.innerWidth; // 依螢幕寬度決定密度
+    if (screenW < 480) {
+        basePatternSize = 60;   // 手機
+    } else if (screenW < 1024) {
+        basePatternSize = 80;   // 平板
+    } else {
+        basePatternSize = 120;  // 桌機
+    }
+    
+    const pw = basePatternSize; // pattern 大小用 CSS 像素
+    const ph = basePatternSize;
+
+    patternCanvas.width = pw * dpr; // 實際 canvas 像素
+    patternCanvas.height = ph * dpr;
     const pctx = patternCanvas.getContext('2d');
 
-    pctx.font = `${14 * dpr}px Arial`;
+    pctx.scale(dpr, dpr); // scale 回 CSS 空間
+
+    // pattern 字體與透明度
+    pctx.font = `${(pw / 5)}px Arial`;
     pctx.fillStyle = "rgba(255,255,255,0.10)";
-    pctx.translate(pw / 2, ph / 2);
-    pctx.rotate(-45 * Math.PI / 180);
     pctx.textAlign = "center";
     pctx.textBaseline = "middle";
+
+    // 置中旋轉
+    pctx.translate(pw / 2, ph / 2);
+    pctx.rotate(-45 * Math.PI / 180);
     pctx.fillText("GAGA", 0, 0);
 
+    // 建 pattern
     const pattern = ctx.createPattern(patternCanvas, "repeat");
     ctx.fillStyle = pattern;
     ctx.fillRect(0, 0, w, h);
