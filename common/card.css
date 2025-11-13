@@ -16,7 +16,7 @@
     display: inline-block;
     width: 30%; /* 每張圖片佔父容器的 30% */
     max-width: 300px; /* 設定圖片最大寬度 */
-    height: 200px; /* 設定圖片的高度 */
+    height: auto !important; /* 設定圖片的高度 */
     text-align: center;
     box-sizing: border-box; /* 讓 padding 和 border 不影響寬度 */
     overflow: hidden; /* 確保圖片不會超出容器 */
@@ -43,8 +43,8 @@
 .text {position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 20px; font-weight: bold; opacity: 0; transition: opacity 0.3s ease;}
 
 canvas {
-  border: 1px solid rgba(0, 0, 0, 0.2); /* 淺一點的邊框 */
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  border: none; /*1px solid rgba(0, 0, 0, 0.2); */
+  box-shadow: none;
   max-width: 100%;
   height: auto;
 }
