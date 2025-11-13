@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh_TW">
+
+<head>
+    <title>朱嘎嘎的嘎嘎</title>
+
+    <link rel="stylesheet" href="../common/common.css">
+    <link rel="stylesheet" href="../common/card.css">
+</head>
+
+<body class="main" oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
+    <div class="header" id="header" style="background-image: url('../common/bar.jpg')"></div>
+    <script>
+        fetch('header_ehb.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header').innerHTML = html;
+            });
+    </script>
+    
+    <div class="content" style="margin-top: 40px;">
+        <div class="card-list">
+            <div id="canvasGallery"></div>
+        </div>
+    </div>
+
+    <div class="preview-modal" id="previewModal">
+        <div class="preview-content" id="preview-content">
+            <img id="previewImg">
+            <div id="previewText" class="preview-text"></div>
+        </div>
+    </div>
+    <div class="footer" id="footer">Copyright © 2025 朱珈儀 All Rights Reserved.&nbsp;</div>
+</body>
+<script src="../common/utils.js"></script>
+<script src="../common/mapping.js" data-config="./octChallenge2025/octChallenge2025.json"></script>

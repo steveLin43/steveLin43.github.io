@@ -32,7 +32,7 @@
     }
 </style>
 
-<script type="text/javascript" src="./common/common.js"></script>
+<script type="text/javascript" src="./common/utils.js"></script>
 
 <body class="main" oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
     <header class="header" id="header"></header>
@@ -96,8 +96,8 @@
         const cycleTime = 3;
         let showingA = true;
         
-        resizeCanvas(canvasA);
-        resizeCanvas(canvasB);
+        resizeCanvasToDisplay(canvasA);
+        resizeCanvasToDisplay(canvasB);
 
         function transitionTo(index) {
             const img = new Image();
@@ -106,10 +106,10 @@
                 const fadeInCanvas = showingA ? canvasB : canvasA;
                 const fadeOutCanvas = showingA ? canvasA : canvasB;
 
-                resizeCanvas(fadeInCanvas);
+                resizeCanvasToDisplay(fadeInCanvas);
                 const ctx = fadeInCanvas.getContext('2d');
                 // 畫新圖
-                drawImageWithWatermark(ctx, img, fadeInCanvas);
+                drawImageWithWatermarkToDisplay(ctx, img, fadeInCanvas);
 
                 // 確保透明度初始值正確
                 fadeInCanvas.style.opacity = 0;
