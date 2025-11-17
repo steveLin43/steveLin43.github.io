@@ -36,7 +36,7 @@ async function initGallery() {
         const gallery = document.getElementById('canvasGallery');
         gallery.innerHTML = ''; // 清空舊內容
 
-        // 將簡易格式轉成可用物件陣列
+        // 將 json 轉成可用物件陣列
         const galleryItems = Object.entries(config).map(([key, text]) => ({
             src: `${CONFIG_FOLDER}/${key}`,
             text
@@ -56,12 +56,7 @@ async function initGallery() {
             // 讓 canvas 記住圖片路徑與文字
             canvas.dataset.src = item.src;
             canvas.dataset.text = item.text;
-            canvas.addEventListener("click", () => showPreview(img.src, item.text)); // 電腦手機點擊 → 開啟預覽視窗
-
-            const textDiv = document.createElement('div');
-            textDiv.className = 'text';
-            textDiv.textContent = item.text;
-            card.appendChild(textDiv);
+            canvas.addEventListener("click", () => showPreview(img, item.text)); // 電腦手機點擊 → 開啟預覽視窗(浮水印)
 
             gallery.appendChild(card);
 
@@ -72,7 +67,6 @@ async function initGallery() {
 
             // 當圖片載入完成 (img.onload)，再根據圖片比例設定 canvas 實際尺寸。
             img.onload = () => {
-                const dpr = window.devicePixelRatio || 1;
                 const galleryWidth = gallery.clientWidth || Math.round(window.innerWidth * 0.9);
                 const cols = 4; // 一行幾張
                 const maxWidth = galleryWidth / cols;

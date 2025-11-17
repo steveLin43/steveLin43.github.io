@@ -1,5 +1,9 @@
-/* ======= main ======= */
-let lastTap = 0;
+/* ======= settings ======= */
+let waterWord = "© 朱嘎嘎";
+let waterColor = "rgba(0, 0, 0, 0.20)";
+let patternWord = "GAGA";
+let patternColor = "rgba(0, 0, 0, 0.01)";
+
 function $(str){
     if(typeof str === 'string'){
         return document.getElementById(str);
@@ -8,10 +12,33 @@ function $(str){
     }
 }
 
-// 開啟預覽視窗
-function showPreview(src, text) {
+// 開啟(原圖)預覽視窗
+function showPreview(img, text) {
+    const bigCanvas = document.createElement("canvas");
+    bigCanvas.width = img.width;
+    bigCanvas.height = img.height;
+
+    const ctx = bigCanvas.getContext("2d");
+
+    // 畫原尺寸圖片
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+
+    // 加浮水印（右下角）
+    ctx.font = `${Math.max(img.width, img.height) * 0.04}px Arial`;
+    ctx.fillStyle = waterColor;
+    ctx.textAlign = "right";
+    ctx.textBaseline = "bottom";
+    ctx.fillText(waterWord, img.width - 20, img.height - 20);
+
+    // 加 pattern（可改用你的函式）
+    drawWatermarkPattern(ctx, img.width, img.height, 1);
+
+    // 將大圖轉成 dataURL
+    const finalUrl = bigCanvas.toDataURL("image/png");
+
+    // 顯示到 modal
     const modal = document.getElementById("previewModal");
-    document.getElementById("previewImg").src = src;
+    document.getElementById("previewImg").src = finalUrl;
     document.getElementById("previewText").textContent = text;
     modal.style.display = "flex";
 }
@@ -56,7 +83,7 @@ function drawWatermarkPattern(ctx, displayWidth, displayHeight, dpr) {
     // displayWidth/Height 是 CSS 像素（在呼叫方使用）
     // dpr 是 devicePixelRatio
     const screenW = window.innerWidth;
-    const basePatternSize = screenW < 480 ? 40 : screenW < 1024 ? 80 : 120;
+    const basePatternSize = screenW < 480 ? 140 : screenW < 1024 ? 200 : 280; // pattern 網格大小
     const pw = basePatternSize;
     const ph = basePatternSize;
 
@@ -72,12 +99,12 @@ function drawWatermarkPattern(ctx, displayWidth, displayHeight, dpr) {
     // 畫散淡文字
     pctx.clearRect(0, 0, pw, ph);
     pctx.font = `${Math.max(8, Math.round(pw / 5))}px Arial`;
-    pctx.fillStyle = "rgba(0, 0, 0, 0.10)";
+    pctx.fillStyle = patternColor;
     pctx.textAlign = "center";
     pctx.textBaseline = "middle";
     pctx.translate(pw / 4, ph / 4);
     pctx.rotate(-30 * Math.PI / 180);
-    pctx.fillText("GAGA", 0, 0);
+    pctx.fillText(patternWord, 0, 0);
 
     // 建 pattern 並在主 ctx 用 CSS 尺寸填滿（注意 ctx 已經被 scale 回 CSS 空間）
     const pattern = ctx.createPattern(patternCanvas, "repeat");
@@ -133,11 +160,11 @@ function drawImageWithWatermark(ctx, img, canvas, displayWidth, displayHeight) {
 
     // 最後畫浮水印文字（置於最上層）
     ctx.font = `${Math.round(16)}px Arial`; // 已在 CSS px 空間
-    ctx.fillStyle = "rgba(0, 0, 0, 0.20)";
+    ctx.fillStyle = waterColor;
     ctx.textAlign = 'right';
     ctx.textBaseline = 'bottom';
     // 把位置依圖片區域調整，確保浮水印在圖片內右下
-    ctx.fillText('© 朱嘎嘎', offsetX + drawW - 8, offsetY + drawH - 8);
+    ctx.fillText(waterWord, offsetX + drawW - 8, offsetY + drawH - 8);
 }
 
 // 輪播圖用，讓 Canvas 適應高 DPI 手機
@@ -197,7 +224,7 @@ function drawImageWithWatermarkToDisplay(ctx, img, canvas) {
     ctx.shadowOffsetX = 2 * dpr;
     ctx.shadowOffsetY = 2 * dpr;
 
-    const text = '© 朱嘎嘎';
+    const text = waterWord;
     const pad = 12;
 
     ctx.fillText(text, w - pad, h - pad);
@@ -229,14 +256,14 @@ function drawImageWithWatermarkToDisplay(ctx, img, canvas) {
 
     // pattern 字體與透明度
     pctx.font = `${(pw / 5)}px Arial`;
-    pctx.fillStyle = "rgba(255,255,255,0.10)";
+    pctx.fillStyle = patternColor;
     pctx.textAlign = "center";
     pctx.textBaseline = "middle";
 
     // 置中旋轉
     pctx.translate(pw / 2, ph / 2);
     pctx.rotate(-45 * Math.PI / 180);
-    pctx.fillText("GAGA", 0, 0);
+    pctx.fillText(patternWord, 0, 0);
 
     // 建 pattern
     const pattern = ctx.createPattern(patternCanvas, "repeat");

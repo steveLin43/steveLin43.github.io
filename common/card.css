@@ -33,14 +33,8 @@
     margin: 0 auto;
 }
 
-/* .card:hover .image {opacity: 0.5;} */
-/* .card:hover .text {opacity: 1;} */
-
 /* 預設圖片樣式 */
 .image {width: 100%; height: 100%; object-fit: cover; /* 保持圖片比例且填充容器 */ transition: opacity 0.3s ease;}
-
-/* 預設文字隱藏 */
-.text {position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 20px; font-weight: bold; opacity: 0; transition: opacity 0.3s ease;}
 
 canvas {
   border: none; /*1px solid rgba(0, 0, 0, 0.2); */
