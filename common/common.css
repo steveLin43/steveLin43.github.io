@@ -59,29 +59,40 @@ img {display:block; border:0; }
     position: relative;
 }
 
+/* 外層：控制 dropdown 的開合動畫 */
 .dropdown-content {
     max-height: 0;
     overflow: hidden;
     position: absolute;
-    left: 50%; /* 水平位置設在中間 */
-    transform: translateX(-50%); /* 將它往左移一半寬度以置中 */
+    right: 0;     /* 從右側展開 */
+    left: auto;
     background-color: white;
-    min-width: 120px;
     box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
-    z-index: 99; /* 顯示層級 */
-    transition: max-height 0.3s ease; /* 動畫滑動效果 */
-    text-align: center;
     border-radius: 4px;
+    transition: max-height 0.3s ease; /* 動畫滑動效果 */
+    z-index: 99;
+    text-align: center;
 }
 
-.dropdown-content a {
+/* 內層：放內容，負責垂直捲動 */
+.dropdown-inner {
+    max-height: 300px;     /* 控制可視高度 */
+    overflow-y: auto;      /* 垂直捲軸在這層出現 */
+    padding: 8px 0;        /* 讓上下留一點空間 */
+}
+
+/* 選項 */
+.dropdown-inner a {
     display: block;
     padding: 8px 12px;
+    white-space: nowrap; /* 強制單行 */
+    width: max-content; /* 寬度會依內容長度自動增加 */
+    min-width: 140px;
+    background: #fff; /* linear-gradient(to bottom, #fff, #d8e3ff); */
     color: #333;
     text-decoration: none; /* 去除預設的超連結底線 */
     opacity: 0;
-    transition: opacity 1s ease;
-    background: linear-gradient(to bottom, #fff, #d8e3ff);
+    transition: opacity 0.5s ease;
 }
 
 .dropdown:hover .dropdown-content {max-height: 300px; /* 足夠容納全部項目即可 */}
