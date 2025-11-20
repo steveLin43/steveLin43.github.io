@@ -79,4 +79,5 @@ canvas {
     color: #333;
     max-width: 30vw;
     overflow-wrap: break-word;
+    white-space: pre-line; 
 }
