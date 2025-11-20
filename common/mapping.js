@@ -18,7 +18,7 @@ function getConfigPath() {
     return path || './config.json';
 }
 
-// 取出資料夾部分（例如 "./exhibitions/octChallenge2025"）
+// 取出資料夾部分（例如 "./gallery/octChallenge2025"）
 function getConfigFolder(configPath) {
     return configPath.substring(0, configPath.lastIndexOf('/'));
 }
@@ -84,7 +84,7 @@ async function initGallery() {
                 }
 
                 // 設定 canvas 實際像素與 CSS 顯示尺寸
-                resizeCanvasToExhibitions(canvas, displayWidth, displayHeight);
+                resizeCanvasToGallery(canvas, displayWidth, displayHeight);
 
                 const ctx = canvas.getContext('2d');
 

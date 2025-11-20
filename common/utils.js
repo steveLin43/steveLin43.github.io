@@ -62,8 +62,8 @@ document.addEventListener("click", function (e) {
 });
 
 
-// exhibitions用，設實際像素並維持 CSS 大小（不做多餘 scale）
-function resizeCanvasToExhibitions(canvas, targetWidth, targetHeight) {
+// gallery 用，設實際像素並維持 CSS 大小（不做多餘 scale）
+function resizeCanvasToGallery(canvas, targetWidth, targetHeight) {
     // 如果給了目標 CSS 尺寸就用，不然以 getBoundingClientRect() 為準
     const rectWidth = targetWidth ?? canvas.getBoundingClientRect().width;
     const rectHeight = targetHeight ?? canvas.getBoundingClientRect().height;
@@ -77,7 +77,7 @@ function resizeCanvasToExhibitions(canvas, targetWidth, targetHeight) {
     canvas.height = Math.round(rectHeight * dpr);
 }
 
-// exhibitions用
+// gallery 用
 // 防複製 pattern
 function drawWatermarkPattern(ctx, displayWidth, displayHeight, dpr) {
     // displayWidth/Height 是 CSS 像素（在呼叫方使用）
@@ -115,7 +115,7 @@ function drawWatermarkPattern(ctx, displayWidth, displayHeight, dpr) {
     ctx.restore();
 }
 
-// exhibitions用
+// gallery 用
 function drawImageWithWatermark(ctx, img, canvas, displayWidth, displayHeight) {
     // displayWidth/Height = CSS 像素（非實際像素）
     const dpr = window.devicePixelRatio || 1;
