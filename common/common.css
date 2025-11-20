@@ -64,14 +64,16 @@ img {display:block; border:0; }
     max-height: 0;
     overflow: hidden;
     position: absolute;
-    right: 0;     /* 從右側展開 */
-    left: auto;
     background-color: white;
     box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
     border-radius: 4px;
     transition: max-height 0.3s ease; /* 動畫滑動效果 */
     z-index: 99;
     text-align: center;
+
+    left: 50%;
+    transform: translateX(-50%);
+    padding-right: 14px;
 }
 
 /* 內層：放內容，負責垂直捲動 */
