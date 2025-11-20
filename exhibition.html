@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh_TW">
+
+<head>
+    <!-- 複製 index -->
+    <link rel="stylesheet" href="./common/common.css">
+</head>
+
+<style>
+    .container {
+        padding-top: 30px;
+    }
+
+    .paragraph {
+        text-align: left;
+        padding-left: 20px;
+        font-family: "PMingLiU", "標楷體", sans-serif;
+    }
+</style>
+
+<script type="text/javascript" src="./common/utils.js"></script>
+
+<body class="main" oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
+    <div class="header" id="header" style="background-image: url('./img/bar.jpg')"></div>
+    <script>
+        fetch('./common/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header').innerHTML = html;
+            });
+    </script>
+    
+
+    <div class="content">
+        <div class="container">
+            <div id="box">
+                <canvas id="canvas1" style="z-index:1;"></canvas>
+                <canvas id="canvas2" style="z-index:2; opacity: 0; transition: opacity 1s;"></canvas>
+                <p id="pageView">
+                    <i class="active"></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </p>
+            </div>
+            <div class="section-content">
+                <div class="paragraph" style="text-align:left;color:rgb(255, 255, 255)">
+                    <span size="3">朱嘎嘎的自我介紹紹紹紹紹紹紹紹</span>
+                </div>
+                <!-- Social Medias -->
+                <div style="text-align:right; padding-right: 20px;">
+                    <a class="wsite-social-item wsite-social-facebook" href="https://www.facebook.com/ayechenboss/"
+                        target="_blank" alt="Facebook" aria-label="Facebook"></a>
+                    <a class="wsite-social-item wsite-social-instagram" href="https://www.instagram.com/bossennoir/"
+                        target="_blank" alt="Instagram" aria-label="Instagram"></a>
+                    <a class="wsite-social-item wsite-social-mail" href="mailto:bossinblack@gmail.com" target="_blank"
+                        alt="Mail" aria-label="Mail"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer" id="footer">Copyright © 2025 朱珈儀 All Rights Reserved.&nbsp;</div>
+</body>
+
+<script>
+    // 輪播圖
+    document.addEventListener('DOMContentLoaded', function () {
+        const canvasA = document.getElementById('canvas1');
+        const canvasB = document.getElementById('canvas2');
+        const aPage = document.querySelectorAll('#pageView i');
+
+        const imagePaths = [
+            'img/cycle_1.jpg',
+            'img/cycle_2.jpg',
+            'img/cycle_3.jpg',
+            'img/cycle_4.jpg',
+            'img/cycle_5.jpg'
+        ];
+
+        let index = 0, currentPage = 0, timer = null;
+        const cycleTime = 3;
+        let showingA = true;
+        
+        resizeCanvasToDisplay(canvasA);
+        resizeCanvasToDisplay(canvasB);
+
+        function transitionTo(index) {
+            const img = new Image();
+            img.src = imagePaths[index];
+            img.onload = () => {
+                const fadeInCanvas = showingA ? canvasB : canvasA;
+                const fadeOutCanvas = showingA ? canvasA : canvasB;
+
+                resizeCanvasToDisplay(fadeInCanvas);
+                const ctx = fadeInCanvas.getContext('2d');
+                // 畫新圖
+                drawImageWithWatermarkToDisplay(ctx, img, fadeInCanvas);
+
+                // 確保透明度初始值正確
+                fadeInCanvas.style.opacity = 0;
+                fadeOutCanvas.style.opacity = 1;
+
+                // 觸發動畫（稍微延遲一下，確保 opacity 0 → 1 有時間差）
+                requestAnimationFrame(() => {
+                    fadeInCanvas.style.opacity = 1;
+                    fadeOutCanvas.style.opacity = 0;
+                });
+
+                showingA = !showingA; // 下一次換 canvas
+            };
+        }
+
+        function changeView() {
+            if (index >= imagePaths.length) index = 0;
+            transitionTo(index);
+            aPage[currentPage].className = '';
+            currentPage = index;
+            aPage[currentPage].className = 'active';
+        }
+
+        function changeTag() {
+            index++;
+            changeView();
+        }
+
+        function startTimer() {
+            if (timer === null) {
+                timer = setInterval(changeTag, cycleTime * 1000);
+            }
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+            timer = null;
+        }
+
+        // 點選下方圓點
+        aPage.forEach((dot, i) => {
+            dot.onclick = function () {
+                stopTimer();
+                index = i;
+                changeView();
+                startTimer();
+            }
+        });
+
+        transitionTo(index);
+        startTimer();
+    });
+</script>
